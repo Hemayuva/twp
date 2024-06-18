@@ -113,7 +113,7 @@ resource "aws_instance" "wordpress_instance" {
   ami                         = "ami-07caf09b362be10b8"
   instance_type               = "t2.micro"
   count                       = 1
-  key_name                    = "pm.pem"
+  key_name                    = "pro.pem"
   vpc_security_group_ids      = [aws_security_group.wordpress_sg.id]
   subnet_id                   = aws_subnet.main.id
   associate_public_ip_address = true

@@ -19,6 +19,7 @@ resource "aws_subnet" "main" {
   availability_zone = "us-east-1a"
   tags = {
     Name = "subnet"
+  }
 }
 #creating internet gateway
 resource "aws_internet_gateway" "main" {
@@ -109,7 +110,8 @@ resource "aws_instance" "wordpress_instance" {
   subnet_id                   = aws_subnet.main.id
   associate_public_ip_address = true
   user_data                   = file("userdata.sh")
-  tags = { Name = "Wordpress_Instance"
+  tags = { 
+        Name = "Wordpress_Instance"
   }
 }
 #resource "aws_key_pair" "bunny" {

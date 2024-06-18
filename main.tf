@@ -1,8 +1,7 @@
 #provider.tf
 provider "aws" {
   region     = "us-east-1"
-  access_key = "AKIATCKAM5PWMKA6JRKQ"
-  secret_key = ""
+}
 
 #vpc.tf
 resource "aws_vpc" "main" {
@@ -19,7 +18,9 @@ resource "aws_subnet" "main" {
   cidr_block        = var.subnet_cidr
   availability_zone = "us-east-1a"
   tags = {
-    Name = "subnet"#creating internet gateway
+    Name = "subnet"
+}
+#creating internet gateway
 resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
 }
@@ -29,7 +30,6 @@ resource "aws_route_table" "main" {
   vpc_id = aws_vpc.main.id
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.main.id
   }
   tags = {
     Name = "Route to internet"
@@ -104,7 +104,7 @@ resource "aws_instance" "wordpress_instance" {
   ami                         = "ami-07caf09b362be10b8"
   instance_type               = "t2.micro"
   count                       = 1
-  key_name                    = "bunny-key"
+  key_name                    = "pm.pem"
   vpc_security_group_ids      = [aws_security_group.wordpress_sg.id]
   subnet_id                   = aws_subnet.main.id
   associate_public_ip_address = true
@@ -112,10 +112,10 @@ resource "aws_instance" "wordpress_instance" {
   tags = { Name = "Wordpress_Instance"
   }
 }
-resource "aws_key_pair" "bunny" {
-  key_name   = "bunny-key"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 email@example.com"
-}
+#resource "aws_key_pair" "bunny" {
+ # key_name   = "bunny-key"
+#  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 email@example.com"
+#}
 output "public_ip" {
   value = aws_instance.wordpress_instance[*].public_ip
 }

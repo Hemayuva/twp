@@ -1,6 +1,6 @@
 #provider.tf
 provider "aws" {
-  region = "us-east-1"
+  region = "us-east-2"
 }
 
 #vpc.tf
@@ -16,7 +16,7 @@ resource "aws_vpc" "main" {
 resource "aws_subnet" "main" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.subnet_cidr
-  availability_zone = "us-east-1a"
+  availability_zone = "us-east-2a"
   tags = {
     Name = "subnet"
   }
@@ -113,7 +113,7 @@ resource "aws_instance" "wordpress_instance" {
   ami                         = "ami-07caf09b362be10b8"
   instance_type               = "t2.micro"
   count                       = 1
-  key_name                    = "bunny-key"
+  key_name                    = "key"
   vpc_security_group_ids      = [aws_security_group.wordpress_sg.id]
   subnet_id                   = aws_subnet.main.id
   associate_public_ip_address = true
